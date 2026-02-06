@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TMM-E</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --primary-dark: #5b4fcf;
+            --accent: #00cec9;
+            --accent-dark: #00a8a8;
+            --dark: #0f0f23;
+            --darker: #0a0a18;
+            --light: #e2e2e2;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon-glow: 0 0 10px var(--accent), 0 0 20px var(--accent), 0 0 30px var(--accent);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(108, 92, 231, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 206, 201, 0.1) 0%, transparent 20%);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(108, 92, 231, 0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: var(--accent);
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), transparent);
+            border-radius: 3px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Liquid Glass эффект */
+        .glass-effect {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+
+        .glass-effect:hover {
+            box-shadow: 0 8px 32px rgba(108, 92, 231, 0.2);
+            border-color: rgba(108, 92, 231, 0.3);
+        }
+
+        /* Навигация */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 10px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo img {
+            height: 50px;
+            border-radius: 10px;
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            text-shadow: var(--neon-glow);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--light);
+            cursor: pointer;
+        }
+
+        /* Герой секция */
+        .hero {
+            padding: 180px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(108, 92, 231, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(0, 206, 201, 0.5);
+        }
+
+        .hero-description {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            font-size: 1.2rem;
+            color: #b0b0d0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, var(--primary), var(--accent-dark));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(108, 92, 231, 0.6);
+            background: linear-gradient(45deg, var(--primary-dark), var(--accent));
+        }
+
+        /* Секции */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .screenshot {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: var(--transition);
+            height: 300px;
+            background: linear-gradient(45deg, var(--primary), var(--accent-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .screenshot:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(108, 92, 231, 0.3);
+        }
+
+        /* Системные требования */
+        .requirements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .requirement-card {
+            padding: 30px;
+        }
+
+        .requirement-card h3 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .requirement-card h3 i {
+            font-size: 1.5rem;
+        }
+
+        .specs {
+            list-style: none;
+        }
+
+        .specs li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .specs li:last-child {
+            border-bottom: none;
+        }
+
+        .spec-name {
+            color: #b0b0d0;
+        }
+
+        .spec-value {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Моды */
+        .mods-container {
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 10px;
+            margin-bottom: 30px;
+        }
+
+        .mods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .mod-card {
+            padding: 15px;
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .mod-card:hover {
+            background: rgba(108, 92, 231, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .mod-card h4 {
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .mod-card p {
+            font-size: 0.9rem;
+            color: #b0b0d0;
+        }
+
+        /* Credits */
+        .credits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .credit-card {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .credit-card h3 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .credit-role {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .discord-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #7289da;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 50px;
+            background: rgba(114, 137, 218, 0.1);
+            transition: var(--transition);
+        }
+
+        .discord-link:hover {
+            background: rgba(114, 137, 218, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .clan-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .clan-logo {
+            height: 50px;
+            border-radius: 10px;
+        }
+
+        /* Пасхалки */
+        .easter-egg {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+        }
+
+        .easter-egg:hover {
+            transform: rotate(15deg) scale(1.1);
+            box-shadow: var(--neon-glow);
+        }
+
+        .easter-egg i {
+            font-size: 1.8rem;
+            color: var(--accent);
+        }
+
+        .easter-egg-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 24, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .easter-egg-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .easter-egg-content {
+            background: var(--darker);
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 500px;
+            text-align: center;
+            border: 2px solid var(--primary);
+            box-shadow: var(--neon-glow);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        /* Футер */
+        footer {
+            padding: 50px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 50px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            color: #b0b0d0;
+            font-size: 0.9rem;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            h2 {
+                font-size: 2.2rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav ul {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: rgba(15, 15, 35, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                gap: 0;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+                z-index: 999;
+            }
+            
+            nav ul.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            nav ul li {
+                width: 100%;
+                text-align: center;
+            }
+            
+            nav ul li a {
+                display: block;
+                padding: 15px 0;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            .hero {
+                padding: 150px 0 80px;
+            }
+            
+            section {
+                padding: 70px 0;
+            }
+            
+            .requirements {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Пасхалка-кнопка -->
+    <div class="easter-egg" id="easterEggBtn">
+        <i class="fas fa-egg"></i>
+    </div>
+
+    <!-- Модальное окно пасхалки -->
+    <div class="easter-egg-modal" id="easterEggModal">
+        <div class="easter-egg-content glass-effect">
+            <button class="close-modal" id="closeModalBtn">&times;</button>
+            <h3>Забавный факт</h3>
+            <p>Сам Нотч отказался в это играть из-за неоптимизированности сборки. Говорят, он попытался запустить её на своём суперкомпьютере и получил слайд-шоу из лагов. Ну, хотя-бы стабильное слайд-шоу.</p>
+            <p style="margin-top: 15px; color: var(--accent); font-weight: 600;">Факт: эта сборка потребляет столько оперативки, что у некоторых людей ВСЕГО столько оперативки (8гб)!</p>
+        </div>
+    </div>
+
+    <!-- Шапка -->
+    <header id="header">
+        <div class="container nav-container">
+            <div class="logo">
+                <div class="logo-img glass-effect" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-cubes" style="font-size: 1.8rem; color: var(--accent);"></i>
+                </div>
+                <div class="logo-text">TMmE</div>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="#home">Главная</a></li>
+                    <li><a href="#about">О сборке</a></li>
+                    <li><a href="#requirements">Требования</a></li>
+                    <li><a href="#mods">Моды</a></li>
+                    <li><a href="#credits">Авторы</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Главная секция -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Too many mod-experience</h1>
+            <div class="hero-subtitle">Minecraft 1.20.1 Forge сборка</div>
+            <div class="hero-description">
+                Пиздец какая огромная сборочка модов для настоящих инженеров (или просто мазохистов). Если у кого не взорвется ПК - добро пожаловать в адский, но инженерный рай!
+				
+				<p>(Ну ты-ж пролистай хотя-бы, я там много чего писал)</p>
+            </div>
+            <a href="https://bit.ly/3M8MqM0" target="_blank" class="cta-button">Скачать сборку</a>
+        </div>
+    </section>
+
+    <!-- О сборке -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">Что мы имеем?</h2>
+            <div class="about-content">
+                <div class="about-text glass-effect" style="padding: 30px;">
+                    <p>Create + МИЛЛИОН аддонов: От пушек (Big Cannons) и поездов (Steam 'n' Rails) до ядерки (Create Nuclear) и кулинарии.</p>
+                    <p>TACZ: Топовый огнестрел с нереальными анимациями. Мир: Biomes We've Gone, улучшенные данжи от YUNG и куча живности от Alex's Mobs.</p>
+                    <p>Логистика: Refined Storage для тех, кому лень копаться в сундуках.</p>
+                    <p>Оптимизация и баланс: Про баланс тут и не думали, а создатель сборки с нестабильным фпс с RTX4060M (просадки аж до 40фпс с шейдерами!) может лишь посмеятся над нашими страданиями, если кто не понял — Про оптимизацию тут тоже забили хуй.</p>
+                </div>
+                <div class="screenshot-container glass-effect" style="padding: 10px; display: flex; align-items: center; justify-content: center;">
+                <img src="screenshot1.png" alt="Скриншот сборки Too many mod-experience" style="width: 100%; height: auto; border-radius: 10px; max-height: 400px; object-fit: contain;">
+				</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Системные требования -->
+    <section id="requirements">
+        <div class="container">
+            <h2 class="section-title">🖥️ Системные требования 🛠️</h2>
+            <div class="requirements">
+                <div class="requirement-card glass-effect">
+                    <h3><i class="fas fa-user"></i> Для клиента</h3>
+                    <p style="margin-bottom: 20px; color: #b0b0d0;">Чтобы не смотреть слайд-шоу из лагов и вылетов. <strong>ВАЖНО</strong>: Системные требования лишь приблизительны!</p>
+                    
+                    <h4 style="color: var(--accent); margin-top: 25px; margin-bottom: 15px;">Минимальные:</h4>
+                    <ul class="specs">
+                        <li><span class="spec-name">RAM:</span> <span class="spec-value">3-6 ГБ выделенной (всего 8 ГБ)</span></li>
+                        <li><span class="spec-name">CPU:</span> <span class="spec-value">4-ядерный от 3.0 GHz</span></li>
+                        <li><span class="spec-name">GPU:</span> <span class="spec-value">GTX 1050 / RX 550 с шейдерами; GT 630 / AMD Radeon R7 240 без шейдеров (минимум 1 ГБ видеопамяти).</span></li>
+                        <li><span class="spec-name">Диск:</span> <span class="spec-value">~5 ГБ (лучше SSD)</span></li>
+                    </ul>
+                    
+                    <h4 style="color: var(--accent); margin-top: 25px; margin-bottom: 15px;">Рекомендуемые:</h4>
+                    <ul class="specs">
+                        <li><span class="spec-name">RAM:</span> <span class="spec-value">8-10 ГБ выделенной (всего 16 ГБ)</span></li>
+                        <li><span class="spec-name">CPU:</span> <span class="spec-value">i7 8700 / Ryzen 5 5600+</span></li>
+                        <li><span class="spec-name">GPU:</span> <span class="spec-value">RTX 4060 / RX 5600 + c шейдерами; GTX 1060 / RX 580 + без шейдеров.</span></li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-card glass-effect">
+                    <h3><i class="fas fa-server"></i> Для сервера</h3>
+                    <p style="margin-bottom: 20px; color: #b0b0d0;">Если планируешь строить огромные заводы на Create и стрелять из пушек с друзьями.</p>
+                    
+                    <h4 style="color: var(--accent); margin-top: 25px; margin-bottom: 15px;">На 2-5 человек:</h4>
+                    <ul class="specs">
+                        <li><span class="spec-name">RAM:</span> <span class="spec-value">6-8 ГБ</span></li>
+                        <li><span class="spec-name">CPU:</span> <span class="spec-value">Одно ядро от 3.5 GHz</span></li>
+                        <li><span class="spec-name">Тип:</span> <span class="spec-value">Ламповое выживание</span></li>
+                    </ul>
+                    
+                    <h4 style="color: var(--accent); margin-top: 25px; margin-bottom: 15px;">На 10+ человек:</h4>
+                    <ul class="specs">
+                        <li><span class="spec-name">RAM:</span> <span class="spec-value">10-12 ГБ</span></li>
+                        <li><span class="spec-name">Диск:</span> <span class="spec-value">SSD (лучше NVMe)</span></li>
+                        <li><span class="spec-name">Тип:</span> <span class="spec-value">Масштабный дебош</span></li>
+                    </ul>
+                    
+                    <div style="margin-top: 30px; padding: 15px; background: rgba(255, 0, 0, 0.1); border-radius: 10px; border-left: 4px solid #ff4757;">
+                        <p style="color: #ff6b81; font-weight: 600;">Предупреждение:</p>
+                        <p style="color: #ff6b81; font-size: 0.9rem;">Не пытайтесь запустить эту сборку на тостере. Серьезно. Мы вас предупредили.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Список модов -->
+    <section id="mods">
+        <div class="container">
+            <h2 class="section-title">Список модов</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #b0b0d0; max-width: 800px; margin-left: auto; margin-right: auto;">
+                Только взгляните на этот монстрообразный список. Каждый мод тщательно отобран (ага, конечно), чтобы превратить ваш Minecraft в симулятор инженера-маньяка.
+            </p>
+            
+            <div class="glass-effect mods-container">
+                <div class="mods-grid" id="modsGrid">
+                    <!-- Моды будут добавлены через JavaScript -->
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="showAllMods" class="cta-button" style="padding: 12px 30px; font-size: 1rem;">Показать все моды</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Авторы -->
+    <section id="credits">
+        <div class="container">
+            <h2 class="section-title">Авторы сборки</h2>
+            <div class="credits">
+                <div class="credit-card glass-effect">
+                    <h3>@_vlad_fox_</h3>
+                    <span class="credit-role">Создатель сборки</span>
+                    <p>Тот самый безумец, который решил собрать в одну кучу все возможные моды на Create и аддоны к ним. Не жалуется на FPS, даже когда он падает до 10.</p>
+                    <a href="#" class="discord-link">
+                        <i class="fab fa-discord"></i> Discord
+                    </a>
+                </div>
+                
+                <div class="credit-card glass-effect">
+                    <h3>@andrew1284prod</h3>
+                    <span class="credit-role">Создатель сайта и оптимизатор</span>
+                    <p>Пытался оптимизировать сборку, но сдался после третьего вылета. Зато сделал этот красивый сайт, чтобы вы могли восхищаться сборкой, даже не запуская её.</p>
+                    <a href="#" class="discord-link">
+                        <i class="fab fa-discord"></i> Discord
+                    </a>
+                </div>
+                
+                <div class="credit-card glass-effect">
+                    <h3>Клан ASQ</h3>
+                    <span class="credit-role">Anime SQuad</span>
+                    <p>Легендарный клан, в котором рождаются самые безумные идеи. Если вы видите что-то эпичное и неоптимизированное — это точно их рук дело.</p>
+                    <div class="clan-info">
+                        <img src="logoasq.png" alt="Логотип клана Anime SQuad" class="clan-logo">
+						<div style="font-weight: 600; font-size: 1.2rem;">Anime SQuad</div>
+					</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#home">Главная</a>
+                <a href="#about">О сборке</a>
+                <a href="#requirements">Требования</a>
+                <a href="#mods">Моды</a>
+                <a href="#credits">Авторы</a>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2026. Too many mod-experience (1.20.1 forge). Все права защищены. Ну, типа защищены. Вообще-то это майнкрафт, тут все есть на пиратских сайтах.
+            </div>
+            
+            <div class="copyright" style="margin-top: 15px; font-size: 0.8rem;">
+                Шутки про оптимизацию могут содержать истину. Запускайте на свой страх и риск. Авторы не несут ответственности за сгоревшие видеокарты.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Моды для отображения
+        const mods = [
+            "Alex's Mobs",
+            "Alex's Mobs Interaction",
+            "All The Wood We've Got",
+            "AmbientSounds",
+            "Animation Overhaul",
+            "AppleSkin",
+            "Architectury API",
+            "Bells & Whistles",
+            "Bits 'n' Bobs",
+            "Biomes We've Gone",
+            "Citadel",
+            "Cloth Config",
+            "Copycats+",
+            "CorgiLib",
+            "Create",
+            "Create Big Cannons",
+            "Create Big Cannons: Advanced Technology (CBC: AT)",
+            "Create: Better Motors",
+            "Create: Better Villagers",
+            "Create: Blocks & Bogies",
+            "Create: Central Kitchen (Food)",
+            "Create: Confectionery",
+            "Create Crafts & Additions",
+            "Create Deco",
+            "Create: Encased",
+            "Create: Enchantment Industry",
+            "Create: Framed",
+            "Create Goggles",
+            "Create: Immersive TACZ",
+            "Create: Interiors",
+            "Create: Ironworks",
+            "Create: Jetpack Curios",
+            "Create: Liquid Fuel",
+            "Create: Metalwork",
+            "Create: More Features",
+            "Create: New Age",
+            "Create: Nuclear",
+            "Create: Numismatics",
+            "Create: Power Loader",
+            "Create: Radars",
+            "Create: Railways Navigator",
+            "Create: Sky Village",
+            "Create: Slice & Dice",
+            "Create: Steam 'n' Rails",
+            "Create: Steam Powered",
+            "Create: Stuff & Additions",
+            "Create: The Factory Must Grow (TFMG)",
+            "Create: Trading Floor",
+            "Create: Ultimate Factory",
+            "CreativeCore",
+            "Curios API",
+            "DragonLib",
+            "EdivadLib",
+            "Embeddium (с Rubidium)",
+            "ESL",
+            "Extra Disks",
+            "Extra Gauges",
+            "Extra Storage",
+            "Fabric API Base",
+            "Farmer's Delight",
+            "FerriteCore",
+            "Flywheel",
+            "GeckoLib",
+            "GlitchCore",
+            "IHMT",
+            "Iris Shader Folder",
+            "Iris/Flywheel Compat (Oculus Flywheel Compat)",
+            "Just Enough Items (JEI)",
+            "Kotlin for Forge",
+            "MixinExtras",
+            "Necronomicon",
+            "Oculus",
+            "Oh The Trees You'll Grow",
+            "Ok Zoomer",
+            "PlayerAnimator",
+            "Ponder",
+            "PowerGrid",
+            "Protection Pixel",
+            "Refined Storage",
+            "Ritchies Projectile Lib",
+            "RSRequestify",
+            "Serene Seasons",
+            "Skin Layers 3D",
+            "Sodium Dynamic Lights",
+            "Sodium Extras",
+            "Sodium Options API",
+            "Sound Physics Remastered",
+            "Starlight",
+            "Timeless and Classics Zero (TACZ)",
+            "TerraBlender",
+            "Transition",
+            "TRender",
+            "Underground Village",
+            "Wrench Wrapper",
+            "YACL (Yet Another Config Lib)",
+            "YUNG's API",
+            "YUNG's Better Caves",
+            "YUNG's Better Desert Temples",
+            "YUNG's Better Dungeons",
+            "YUNG's Better End Island",
+            "YUNG's Better Jungle Temples",
+            "YUNG's Better Mineshafts",
+            "YUNG's Better Nether Fortresses",
+            "YUNG's Better Ocean Monuments",
+            "YUNG's Better Strongholds",
+            "YUNG's Better Witch Huts"
+        ];
+
+        // Функция для отображения модов
+        function renderMods(limit = 20) {
+            const modsGrid = document.getElementById('modsGrid');
+            modsGrid.innerHTML = '';
+            
+            const displayMods = limit === 'all' ? mods : mods.slice(0, limit);
+            
+            displayMods.forEach(mod => {
+                const modCard = document.createElement('div');
+                modCard.className = 'mod-card glass-effect';
+                
+                // Определяем категорию мода для описания
+                let description = "Мод для Minecraft";
+                if (mod.includes("Create")) description = "Аддон для Create";
+                else if (mod.includes("YUNG")) description = "Улучшенные структуры";
+                else if (mod.includes("Alex")) description = "Мобы и взаимодействия";
+                else if (mod.includes("Sodium") || mod.includes("Embeddium") || mod.includes("Oculus")) description = "Оптимизация и графика";
+                
+                modCard.innerHTML = `
+                    <h4>${mod}</h4>
+                    <p>${description}</p>
+                `;
+                
+                modsGrid.appendChild(modCard);
+            });
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Отображаем первые 20 модов
+            renderMods(20);
+            
+            // Кнопка "Показать все моды"
+            document.getElementById('showAllMods').addEventListener('click', function() {
+                renderMods('all');
+                this.style.display = 'none';
+            });
+            
+            // Мобильное меню
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navMenu = document.getElementById('navMenu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                this.innerHTML = navMenu.classList.contains('active') ? 
+                    '<i class="fas fa-times"></i>' : 
+                    '<i class="fas fa-bars"></i>';
+            });
+            
+            // Закрытие меню при клике на ссылку
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+            
+            // Пасхалка
+            const easterEggBtn = document.getElementById('easterEggBtn');
+            const easterEggModal = document.getElementById('easterEggModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            
+            easterEggBtn.addEventListener('click', function() {
+                easterEggModal.classList.add('active');
+            });
+            
+            closeModalBtn.addEventListener('click', function() {
+                easterEggModal.classList.remove('active');
+            });
+            
+            // Закрытие модального окна при клике вне его
+            easterEggModal.addEventListener('click', function(e) {
+                if (e.target === easterEggModal) {
+                    easterEggModal.classList.remove('active');
+                }
+            });
+            
+            // Добавляем эффект при прокрутке для header
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                
+                // Скрываем пасхалку при прокрутке вниз
+                if (window.scrollY > 300) {
+                    easterEggBtn.style.opacity = '0.7';
+                    easterEggBtn.style.transform = 'scale(0.9)';
+                } else {
+                    easterEggBtn.style.opacity = '1';
+                    easterEggBtn.style.transform = 'scale(1)';
+                }
+            });
+            
+            // Плавная прокрутка для навигационных ссылок
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Добавляем случайные пасхалки при наведении на некоторые элементы
+            const funnyMessages = [
+                "Эта сборка сожрёт всю вашу оперативку!",
+                "ФПС? Что это? Мы такое не знаем.",
+                "Запускайте только на ПК с водяным охлаждением!",
+                "Создатель сборки играет на 10 FPS и не жалуется!",
+                "Чем больше лагов, тем интереснее играть, правда?",
+                "Не пытайтесь понять логику этой сборки. Её нет."
+            ];
+            
+            // Добавляем эффект при наведении на требования
+            document.querySelectorAll('.requirement-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    const randomMessage = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
+                    
+                    // Создаем всплывающую подсказку
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'tooltip';
+                    tooltip.textContent = randomMessage;
+                    tooltip.style.position = 'absolute';
+                    tooltip.style.background = 'rgba(108, 92, 231, 0.9)';
+                    tooltip.style.color = 'white';
+                    tooltip.style.padding = '8px 12px';
+                    tooltip.style.borderRadius = '5px';
+                    tooltip.style.fontSize = '0.9rem';
+                    tooltip.style.zIndex = '1000';
+                    tooltip.style.bottom = '100%';
+                    tooltip.style.left = '50%';
+                    tooltip.style.transform = 'translateX(-50%)';
+                    tooltip.style.marginBottom = '10px';
+                    tooltip.style.whiteSpace = 'nowrap';
+                    tooltip.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+                    
+                    this.style.position = 'relative';
+                    this.appendChild(tooltip);
+                    
+                    setTimeout(() => {
+                        if (this.contains(tooltip)) {
+                            this.removeChild(tooltip);
+                        }
+                    }, 2000);
+                });
+            });
+            
+            // Анимация для логотипа
+            const logo = document.querySelector('.logo');
+            logo.addEventListener('mouseenter', function() {
+                this.style.transform = 'rotate(5deg)';
+            });
+            
+            logo.addEventListener('mouseleave', function() {
+                this.style.transform = 'rotate(0deg)';
+            });
+        });
+    </script>
+</body>
+</html>
